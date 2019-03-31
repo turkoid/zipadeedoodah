@@ -31,7 +31,7 @@ class ZippyMetadata:
         self.download_path: str = None
 
     @property
-    def download_url(self):
+    def download_url(self) -> str:
         return f"{self.base_url}{self.download_path}"
 
 
@@ -109,7 +109,7 @@ class ZipaDeeDooDah:
             metadata.download_path = download_path
             return True
 
-    async def _get_download_links(self):
+    async def _get_download_links(self) -> List[str]:
         browser = await launch(autoClose=False)
         async with ClientSession() as session:
             tasks = [
@@ -118,10 +118,9 @@ class ZipaDeeDooDah:
             ]
             _ = await asyncio.gather(*tasks)
         await browser.close()
-        for metadata in self.links:
-            print(metadata.download_url)
+        return [metadata.download_url for metadata in self.links]
 
-    def get_download_links(self):
+    def get_download_links(self) -> List[str]:
         asyncio.run(self._get_download_links())
 
 
